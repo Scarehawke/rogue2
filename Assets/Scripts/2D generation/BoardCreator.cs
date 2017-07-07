@@ -30,11 +30,20 @@ public class BoardCreator : MonoBehaviour
     private GameObject boardHolder;                           // GameObject that acts as a container for all other tiles.
 
 
+	public Sprite[] levelDesign1;
+	public Sprite[] levelDesign2;
+
+
     private void Start()
     {
         GameObject lh = GameObject.Find("LevelHelper");
         numRooms = new IntRange(lh.GetComponent<LevelHelper>().numRooms, lh.GetComponent<LevelHelper>().numRooms);
 
+		if (lh.GetComponent<LevelHelper> ().designCount < 6) {
+			ChangeLevelDesign (levelDesign1);
+		} else {
+			ChangeLevelDesign (levelDesign2);
+		}
 
         // Create the board holder.
         boardHolder = new GameObject("BoardHolder");
@@ -49,6 +58,51 @@ public class BoardCreator : MonoBehaviour
         InstantiateTiles();
         InstantiateOuterWalls();
     }
+
+
+	void ChangeLevelDesign(Sprite[] design){
+
+		//Change Walls
+		int wallCount = 0;
+		//0 - 8
+		foreach (GameObject item in wallTiles) {
+			item.GetComponent<SpriteRenderer> ().sprite = design[wallCount];
+			wallCount++;
+		}
+			
+		//Change Floor
+		int floorCount = 8;
+		//8 -15
+		foreach (GameObject item in floorTiles) {
+			item.GetComponent<SpriteRenderer> ().sprite = design[floorCount];
+			floorCount++;
+		}
+
+		//Change Out Wall
+		int outWallCount = 16;
+		//16 - 18
+		foreach (GameObject item in outerWallTiles) {
+			item.GetComponent<SpriteRenderer> ().sprite = design[outWallCount];
+			outWallCount++;
+		}
+
+
+		//Change Food
+		int foodCount = 19;
+		//19 - 20
+		foreach (GameObject item in foodTiles) {
+			item.GetComponent<SpriteRenderer> ().sprite = design[foodCount];
+			foodCount++;
+		}
+
+		//Change Exit Tiles
+		int exitCount = 21;
+		//21 - 21
+		foreach (GameObject item in exitTiles) {
+			item.GetComponent<SpriteRenderer> ().sprite = design[exitCount];
+			exitCount++;
+		}
+	}
 
 
     void SetupTilesArray()
@@ -224,7 +278,7 @@ public class BoardCreator : MonoBehaviour
                 if (tiles[i][j] == TileType.Wall)
                 {
                     // ... instantiate a wall over the top.
-                    InstantiateFromArray(wallTiles, i, j);
+					InstantiateFromArray(outerWallTiles, i, j);
                 }
                 if (tiles[i][j] == TileType.Enemies)
                 {

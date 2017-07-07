@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Linq;
+
 
 namespace Completed
 {
@@ -76,6 +78,25 @@ namespace Completed
         {
 			lh = GameObject.Find ("LevelHelper");
 			lh.GetComponent<LevelHelper> ().currentLevel++;
+			lh.GetComponent<LevelHelper> ().designCount++;
+
+
+			// Compose a string that consists of three lines.
+
+
+			string path = System.IO.Directory.GetCurrentDirectory () + "\\highscore.txt";
+			int currentHighscore = int.Parse(System.IO.File.ReadAllText(path));
+
+			if (lh.GetComponent<LevelHelper> ().currentLevel > currentHighscore) {
+				
+				string lines = lh.GetComponent<LevelHelper> ().currentLevel.ToString();
+				System.IO.StreamWriter file = new System.IO.StreamWriter(path);
+				file.WriteLine(lines);
+				file.Close();
+
+			}
+
+
 
 			instance.level = lh.GetComponent<LevelHelper> ().currentLevel;
             instance.InitGame();

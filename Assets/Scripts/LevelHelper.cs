@@ -8,6 +8,8 @@ public class LevelHelper : MonoBehaviour {
 	public int enemySpawnRate = 10;
     public int foodSpawnRate = 10;
     public int numRooms = 2;
+	public int designCount = 1;
+
 
     public string[] action;
 
